@@ -16,9 +16,13 @@ import javax.validation.constraints.Size;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Column(nullable = false, length = 250)
     private String name;
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

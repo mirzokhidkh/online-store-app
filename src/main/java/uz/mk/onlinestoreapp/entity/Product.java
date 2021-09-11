@@ -26,10 +26,11 @@ public class Product extends AbsIntegerEntity {
     @ManyToOne(optional = false)
     private Category category;
 
-    @Column(length = 20)
+    @NotBlank(message = "Product description is required")
+    @Column(nullable = false, length = 20)
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "Product price is required")
     @Column(precision = 6, scale = 2)
     private BigDecimal price;
 

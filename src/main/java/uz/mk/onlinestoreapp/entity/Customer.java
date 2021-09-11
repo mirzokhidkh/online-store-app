@@ -17,7 +17,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Entity
 public class Customer extends AbsIntegerEntity {
-    @Size(min = 3, max = 14)
+
+    @Size(min = 3, max = 14,message = "Please use 3 to 14 characters")
     @Column(nullable = false,length = 14)
     private String name;
 
@@ -25,7 +26,7 @@ public class Customer extends AbsIntegerEntity {
     @Column(nullable = false,length = 3)
     private String country;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false,columnDefinition = "TEXT")
     private String address;
 
     @Size(min = 7, max = 50)

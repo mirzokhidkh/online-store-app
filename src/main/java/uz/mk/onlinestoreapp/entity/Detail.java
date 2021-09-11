@@ -27,6 +27,6 @@ public class Detail extends AbsIntegerEntity {
     @JoinColumn(name="pr_id")
     private Product product;
 
-    @NotBlank
+    @NotBlank(message = "Detail quantity is required")
     private short quantity;
 }

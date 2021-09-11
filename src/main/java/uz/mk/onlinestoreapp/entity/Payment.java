@@ -4,31 +4,38 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Payment extends AbsIntegerEntity {
-    @Column(nullable = false)
+public class Payment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false,updatable = false)
+    @CreationTimestamp
     private Timestamp time;
 
-    @NotBlank
+    @NotBlank(message = "Payment amount is required")
     @Column(precision = 8, scale = 2)
     private BigDecimal amount;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="inv_id")
     private Invoice invoice;
+
+    public Payment(BigDecimal amount, Invoice invoice) {
+        this.amount = amount;
+        this.invoice = invoice;
+    }
 }
