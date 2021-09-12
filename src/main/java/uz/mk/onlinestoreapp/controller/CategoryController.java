@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.mk.onlinestoreapp.entity.Category;
+import uz.mk.onlinestoreapp.entity.Customer;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.service.CategoryService;
 import uz.mk.onlinestoreapp.service.MapValidationErrorService;
@@ -46,10 +47,15 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-
     @GetMapping
     public HttpEntity<?> getCategoryByProductId(@RequestParam Integer product_id) {
         Category category = categoryService.getCategoryByProductId(product_id);
+        return ResponseEntity.ok(category);
+    }
+
+    @GetMapping("/details/{category_id}")
+    public HttpEntity<?> getCategoryById(@PathVariable Integer category_id) {
+        Category category = categoryService.getCategoryById(category_id);
         return ResponseEntity.ok(category);
     }
 

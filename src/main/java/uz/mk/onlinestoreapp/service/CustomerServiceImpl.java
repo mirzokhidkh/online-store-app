@@ -15,23 +15,18 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
+
     @Override
     public ApiResponse saveOrEditCustomer(Customer customer) {
-        if (customer.getId() == null) {
-            if (customerRepository.existsByPhone(customer.getName())) {
-                return new ApiResponse("Customer with such a phone number '" + customer.getPhone() + "' already exists", false);
-            }
-            Customer savedCustomer = customerRepository.save(customer);
-            return new ApiResponse("Customer saved", true, savedCustomer);
-        } else {
-            if (customerRepository.existsByPhoneAndIdNot(customer.getName(), customer.getId())) {
-                return new ApiResponse("Customer with such a phone number '" + customer.getPhone() + "' already exists", false);
-            }
-            Customer editedCustomer = customerRepository.save(customer);
-            return new ApiResponse("Customer ID '" + customer.getId() + "' edited", true, editedCustomer);
+        boolean isIdNull = customer.getId() == null;
+        if (isIdNull && customerRepository.existsByPhone(customer.getName())) {
+            return new ApiResponse("Customer with such a phone number '" + customer.getPhone() + "' already exists", false);
+        } else if (customerRepository.existsByPhoneAndIdNot(customer.getName(), customer.getId())) {
+            return new ApiResponse("Customer with such a phone number '" + customer.getPhone() + "' already exists", false);
         }
+        Customer savedOrEditedCustomer = customerRepository.save(customer);
+        return new ApiResponse("Customer " + (isIdNull ? "saved" : "edited"), true, savedOrEditedCustomer);
     }
-
 
     @Override
     public ApiResponse deleteCustomer(Integer customer_id) {
@@ -50,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(Integer customer_id) {
-        return customerRepository.findById(customer_id).orElseThrow(() -> new ResourceNotFoundException("Csutomer with ID '"+customer_id+"' not found"));
+        return customerRepository.findById(customer_id).orElseThrow(() -> new ResourceNotFoundException("Customer with ID '" + customer_id + "' not found"));
     }
 
 }

@@ -20,22 +20,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ApiResponse saveOrEditProduct(ProductDTO productDTO) {
-        if (productDTO.getId() == null) {
-            if (productRepository.existsByNameAndCategoryId(productDTO.getName(),productDTO.getCategory_id())) {
-                return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category '"+productDTO.getCategory_id()+"' already exists", false);
-            }
-            Product newProduct = createProduct(productDTO);
-            Product savedProduct = productRepository.save(newProduct);
-            return new ApiResponse("Product saved", true, savedProduct);
+        boolean isIdNull = productDTO.getId() == null;
+        if (isIdNull && productRepository.existsByNameAndCategoryId(productDTO.getName(),productDTO.getCategory_id())) {
+            return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category '"+productDTO.getCategory_id()+"' already exists", false);
         } else {
             if (productRepository.existsByNameAndCategoryIdAndIdNot(productDTO.getName(),productDTO.getCategory_id(),productDTO.getId())) {
                 return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category '"+productDTO.getCategory_id()+"' already exists", false);
             }
-            Product editingProduct = createProduct(productDTO);
-            editingProduct.setId(productDTO.getId());
-            Product editedProduct = productRepository.save(editingProduct);
-            return new ApiResponse("Product ID '" + productDTO.getId() + "' edited", true, editedProduct);
         }
+        Product product = createProduct(productDTO);
+        if (isIdNull) {
+            product.setId(productDTO.getId());
+        }
+        Product savedOrEditedProduct = productRepository.save(product);
+
+        return new ApiResponse("Product " + (isIdNull ? "saved" : "edited"), true, savedOrEditedProduct);
+
     }
 
     @Override

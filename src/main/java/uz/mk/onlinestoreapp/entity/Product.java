@@ -38,4 +38,5 @@ public class Product extends AbsIntegerEntity {
 
     @Column(nullable = false, length = 1024)
     private String photo;
+
 }

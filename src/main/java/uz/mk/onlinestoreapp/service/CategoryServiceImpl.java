@@ -3,6 +3,7 @@ package uz.mk.onlinestoreapp.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.mk.onlinestoreapp.entity.Category;
+import uz.mk.onlinestoreapp.entity.Customer;
 import uz.mk.onlinestoreapp.exception.ResourceNotFoundException;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.repository.CategoryRepository;
@@ -17,19 +18,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ApiResponse saveOrEditCategory(Category category) {
-        if (category.getId() == null) {
-            if (categoryRepository.existsByName(category.getName())) {
-                return new ApiResponse("Category with such a name already exists", false);
-            }
-            Category savedCategory = categoryRepository.save(category);
-            return new ApiResponse("Category saved", true, savedCategory);
-        } else {
-            if (categoryRepository.existsByNameAndIdNot(category.getName(), category.getId())) {
-                return new ApiResponse("Category with such a name '"+category.getName()+"' already exists", false);
-            }
-            Category editedCategory = categoryRepository.save(category);
-            return new ApiResponse("Category ID '" + category.getId() + "' edited", true, editedCategory);
+        boolean isIdNull = category.getId() == null;
+        if (isIdNull && categoryRepository.existsByName(category.getName())) {
+            return new ApiResponse("Category with such a name '" + category.getName() + "' already exists", false);
+        } else if (categoryRepository.existsByNameAndIdNot(category.getName(), category.getId())) {
+            return new ApiResponse("Category with such a name '" + category.getName() + "' already exists", false);
         }
+        Category savedOrEditedCategory = categoryRepository.save(category);
+        return new ApiResponse("Category " + (isIdNull ? "saved" : "edited"), true, savedOrEditedCategory);
     }
 
 
@@ -45,7 +41,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategories() {
-       return categoryRepository.findAll();
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Category getCategoryById(Integer category_id) {
+        return categoryRepository.findById(category_id).orElseThrow(() -> new ResourceNotFoundException("Category with ID '" + category_id + "' not found"));
     }
 
     @Override

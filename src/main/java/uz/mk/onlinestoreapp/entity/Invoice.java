@@ -1,11 +1,10 @@
 package uz.mk.onlinestoreapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +20,7 @@ public class Invoice{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name="ord_id")
     private Order order;
 
@@ -31,10 +30,17 @@ public class Invoice{
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date issued;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date due;
+
+    public Invoice(Order order, BigDecimal amount) {
+        this.order = order;
+        this.amount = amount;
+    }
 
     public Invoice(Order order, BigDecimal amount, Date due) {
         this.order = order;

@@ -30,7 +30,7 @@ public class Payment {
     @Column(precision = 8, scale = 2)
     private BigDecimal amount;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name="inv_id")
     private Invoice invoice;
 

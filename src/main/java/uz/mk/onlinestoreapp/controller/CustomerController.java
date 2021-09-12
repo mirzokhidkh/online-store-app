@@ -47,7 +47,7 @@ public class CustomerController {
     }
 
     @GetMapping("/details")
-    public HttpEntity<?> getProductById(@RequestParam Integer customer_id) {
+    public HttpEntity<?> getCustomerById(@RequestParam Integer customer_id) {
         Customer customer = customerService.getCustomerById(customer_id);
         return ResponseEntity.ok(customer);
     }
