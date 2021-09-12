@@ -1,5 +1,6 @@
 package uz.mk.onlinestoreapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,7 @@ public class Payment {
 
     @Column(nullable = false,updatable = false)
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Timestamp time;
 
     @NotBlank(message = "Payment amount is required")

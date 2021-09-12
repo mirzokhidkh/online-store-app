@@ -8,6 +8,7 @@ import uz.mk.onlinestoreapp.entity.Order;
 import uz.mk.onlinestoreapp.exception.ResourceNotFoundException;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.payload.OrderDetailsDTO;
+import uz.mk.onlinestoreapp.payload.ResponseOrder;
 import uz.mk.onlinestoreapp.repository.*;
 
 import java.math.BigDecimal;
@@ -25,14 +26,14 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
 
     @Override
-    public ApiResponse saveOrEditOrder(OrderDetailsDTO orderDetailsDTO) {
+    public ResponseOrder saveOrEditOrder(OrderDetailsDTO orderDetailsDTO) {
         boolean isIdNull = orderDetailsDTO.getId() == null;
 
         Order order = createOrderAndDetail(orderDetailsDTO.getCustomer_id());
-        Order savedOrEditedOrder = orderRepository.save(order);
         if (!isIdNull) {
-            savedOrEditedOrder.setId(orderDetailsDTO.getId());
+            order.setId(orderDetailsDTO.getId());
         }
+        Order savedOrEditedOrder = orderRepository.save(order);
         Detail detail = createDetail(orderDetailsDTO, savedOrEditedOrder);
         detailRepository.save(detail);
 
@@ -42,11 +43,11 @@ public class OrderServiceImpl implements OrderService {
         Invoice invoice = createInvoice(savedOrEditedOrder, totalAmount);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(invoice.getIssued());
-        calendar.add(Calendar.DATE,7);
+        calendar.add(Calendar.DATE, 7);
         invoice.setDue(calendar.getTime());
         invoiceRepository.save(invoice);
 
-        return new ApiResponse("Order " + (isIdNull ? "saved" : "edited"), true, savedOrEditedOrder);
+        return new ResponseOrder(isIdNull ? "SUCCESS" : "FAILED", invoice.getId());
     }
 
     @Override
@@ -71,22 +72,19 @@ public class OrderServiceImpl implements OrderService {
 
 
     private Order createOrderAndDetail(Integer customerId) {
-        return new Order(customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("FAILED ! Customer with ID '" + customerId + "' not found")));
+        return new Order(customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with ID '" + customerId + "' not found")));
     }
 
     private Detail createDetail(OrderDetailsDTO orderDetailsDTO, Order order) {
         return new Detail(
                 order,
-                productRepository.findById(orderDetailsDTO.getProduct_id()).orElseThrow(() -> new ResourceNotFoundException("FAILED ! Product with ID '" + orderDetailsDTO.getProduct_id() + "' not found")),
+                productRepository.findById(orderDetailsDTO.getProduct_id()).orElseThrow(() -> new ResourceNotFoundException("Product with ID '" + orderDetailsDTO.getProduct_id() + "' not found")),
                 orderDetailsDTO.getQuantity()
         );
     }
 
-    private Invoice createInvoice(Order order, BigDecimal amount){
-        return new Invoice(
-                order,
-                amount
-                );
+    private Invoice createInvoice(Order order, BigDecimal amount) {
+        return new Invoice(order, amount);
     }
 
 

@@ -9,6 +9,7 @@ import uz.mk.onlinestoreapp.entity.Detail;
 import uz.mk.onlinestoreapp.entity.Order;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.payload.OrderDetailsDTO;
+import uz.mk.onlinestoreapp.payload.ResponseOrder;
 import uz.mk.onlinestoreapp.service.MapValidationErrorService;
 import uz.mk.onlinestoreapp.service.OrderService;
 
@@ -30,11 +31,11 @@ public class OrderController {
     @PostMapping
     public HttpEntity<?> saveOrEditOrder(@Valid @RequestBody OrderDetailsDTO orderDetailsDTO, BindingResult result) {
         HttpEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap!=null) {
+        if (errorMap != null) {
             return errorMap;
         }
-        ApiResponse apiResponse = orderService.saveOrEditOrder(orderDetailsDTO);
-        return ResponseEntity.status(apiResponse.isStatus() ? 201 : 409).body(apiResponse);
+        ResponseOrder responseOrder = orderService.saveOrEditOrder(orderDetailsDTO);
+        return ResponseEntity.status(responseOrder.getStatus().equals("SUCCESS") ? 201 : 409).body(responseOrder);
     }
 
     @DeleteMapping("/{order_id}")
@@ -44,7 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("/list")
-    public Iterable<Order>  getAllOrders(){
+    public Iterable<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
