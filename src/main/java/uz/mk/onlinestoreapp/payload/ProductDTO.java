@@ -23,6 +23,7 @@ public class ProductDTO {
     @Length(max = 20,message = "Please use to 20 characters")
     private String description;
 
+    @NotNull(message = "Product price is required")
     @Digits(integer = 4,fraction = 2,message = "Numeric value out of bounds (<4 digits>.<2 digits> expected)")
     private BigDecimal price;
 

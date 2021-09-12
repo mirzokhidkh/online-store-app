@@ -20,22 +20,21 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name","category_id"}))
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "category_id"})})
 public class Product extends AbsIntegerEntity {
     @Column(nullable = false, length = 10)
     private String name;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
 
     @Column(nullable = false, length = 20)
     private String description;
 
-//    @NotBlank(message = "Product price is required")
     @Column(precision = 6, scale = 2)
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
     @Column(nullable = false, length = 1024)
     private String photo;
