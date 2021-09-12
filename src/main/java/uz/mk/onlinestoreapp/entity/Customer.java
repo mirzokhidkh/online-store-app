@@ -9,6 +9,7 @@ import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @EqualsAndHashCode(callSuper = true)
@@ -18,18 +19,19 @@ import javax.validation.constraints.Size;
 @Entity
 public class Customer extends AbsIntegerEntity {
 
-    @Size(min = 3, max = 14,message = "Please use 3 to 14 characters")
-    @Column(nullable = false,length = 14)
+    @Size(min = 3, max = 14, message = "Please use 3 to 14 characters")
+    @Column(nullable = false, length = 14)
     private String name;
 
     @Size(min = 2, max = 3)
-    @Column(nullable = false,length = 3)
+    @Column(nullable = false, length = 3)
     private String country;
 
-    @Column(nullable = false,columnDefinition = "TEXT")
+    @NotBlank(message = "Customer address is required")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String address;
 
-    @Size(min = 7, max = 50)
-    @Column(length = 50)
+    @Size(min = 7, max = 50,message = "Please use 7 to 50 characters")
+    @Column(unique = true, length = 50)
     private String phone;
 }

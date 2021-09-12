@@ -3,8 +3,8 @@ package uz.mk.onlinestoreapp.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.mk.onlinestoreapp.entity.Category;
+import uz.mk.onlinestoreapp.exception.ResourceNotFoundException;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
-import uz.mk.onlinestoreapp.payload.CategoryDTO;
 import uz.mk.onlinestoreapp.repository.CategoryRepository;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.deleteById(category_id);
             return new ApiResponse("Category with ID '" + category_id + " was deleted", true);
         } catch (Exception e) {
-            return new ApiResponse("Category with ID '" + category_id + "' does not found", false);
+            throw new ResourceNotFoundException("Cannot Category with ID '" + category_id + "'. This category does not found");
         }
     }
 

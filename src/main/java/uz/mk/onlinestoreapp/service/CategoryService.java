@@ -2,7 +2,6 @@ package uz.mk.onlinestoreapp.service;
 
 import uz.mk.onlinestoreapp.entity.Category;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
-import uz.mk.onlinestoreapp.payload.CategoryDTO;
 
 import java.util.List;
 
