@@ -19,9 +19,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ApiResponse saveOrEditCustomer(Customer customer) {
         boolean isIdNull = customer.getId() == null;
-        if (isIdNull && customerRepository.existsByPhone(customer.getName())) {
+        if (isIdNull && customerRepository.existsByPhone(customer.getPhone())) {
             return new ApiResponse("Customer with such a phone number '" + customer.getPhone() + "' already exists", false);
-        } else if (customerRepository.existsByPhoneAndIdNot(customer.getName(), customer.getId())) {
+        } else if (!isIdNull && customerRepository.existsByPhoneAndIdNot(customer.getPhone(), customer.getId())) {
             return new ApiResponse("Customer with such a phone number '" + customer.getPhone() + "' already exists", false);
         }
         Customer savedOrEditedCustomer = customerRepository.save(customer);

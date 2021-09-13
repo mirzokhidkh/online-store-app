@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
 import javax.persistence.*;
@@ -19,11 +20,11 @@ import java.util.Set;
 @Entity(name = "orders")
 @AttributeOverride(
         name = "createdAt",
-        column = @Column(name = "date")
+        column = @Column(name = "date", nullable = false, updatable = false)
 )
 public class Order extends AbsIntegerEntity {
     @ManyToOne(optional = false)
-    @JoinColumn(name="cust_id")
+    @JoinColumn(name = "cust_id")
     private Customer customer;
 
     @JsonIgnore

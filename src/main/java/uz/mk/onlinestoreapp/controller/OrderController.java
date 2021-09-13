@@ -52,7 +52,7 @@ public class OrderController {
 
     @GetMapping("/details")
     public HttpEntity<?> getOrderDetailsById(@RequestParam Integer order_id) {
-        List<Detail> orderDetailList = orderService.getOrderDetailsById(order_id);
+        List<OrderDetailsDTO> orderDetailList = orderService.getOrderDetailsById(order_id);
         return ResponseEntity.ok(orderDetailList);
     }
 

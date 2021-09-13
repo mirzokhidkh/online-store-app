@@ -22,11 +22,10 @@ public class ProductServiceImpl implements ProductService {
     public ApiResponse saveOrEditProduct(ProductDTO productDTO) {
         boolean isIdNull = productDTO.getId() == null;
         if (isIdNull && productRepository.existsByNameAndCategoryId(productDTO.getName(),productDTO.getCategory_id())) {
-            return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category '"+productDTO.getCategory_id()+"' already exists", false);
-        } else {
-            if (productRepository.existsByNameAndCategoryIdAndIdNot(productDTO.getName(),productDTO.getCategory_id(),productDTO.getId())) {
-                return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category '"+productDTO.getCategory_id()+"' already exists", false);
-            }
+            return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category ID '"+productDTO.getCategory_id()+"' already exists", false);
+        } else if (!isIdNull && productRepository.existsByNameAndCategoryIdAndIdNot(productDTO.getName(),productDTO.getCategory_id(),productDTO.getId())) {
+                return new ApiResponse("Product with such a name '" + productDTO.getName() + "' and category ID '"+productDTO.getCategory_id()+"' already exists", false);
+
         }
         Product product = createProduct(productDTO);
         if (isIdNull) {

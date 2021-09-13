@@ -9,7 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -28,7 +30,8 @@ public class Payment {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Timestamp time;
 
-    @NotBlank(message = "Payment amount is required")
+    @NotNull(message = "Payment amount is required")
+    @Digits(integer = 6,fraction = 2,message = "Numeric value out of bounds (<6 digits>.<2 digits> expected)")
     @Column(precision = 8, scale = 2)
     private BigDecimal amount;
 

@@ -46,8 +46,8 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
-    @GetMapping("/details")
-    public HttpEntity<?> getCustomerById(@RequestParam Integer customer_id) {
+    @GetMapping("/details/{id}")
+    public HttpEntity<?> getCustomerById(@PathVariable(name = "id") Integer customer_id) {
         Customer customer = customerService.getCustomerById(customer_id);
         return ResponseEntity.ok(customer);
     }

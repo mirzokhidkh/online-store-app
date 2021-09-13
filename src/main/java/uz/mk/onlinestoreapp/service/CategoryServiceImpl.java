@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
         boolean isIdNull = category.getId() == null;
         if (isIdNull && categoryRepository.existsByName(category.getName())) {
             return new ApiResponse("Category with such a name '" + category.getName() + "' already exists", false);
-        } else if (categoryRepository.existsByNameAndIdNot(category.getName(), category.getId())) {
+        } else if (!isIdNull && categoryRepository.existsByNameAndIdNot(category.getName(), category.getId())) {
             return new ApiResponse("Category with such a name '" + category.getName() + "' already exists", false);
         }
         Category savedOrEditedCategory = categoryRepository.save(category);

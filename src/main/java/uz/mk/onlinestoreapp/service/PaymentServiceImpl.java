@@ -24,13 +24,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public ApiResponse saveOrEditPayment(PaymentDTO paymentDTO) {
         boolean isIdNull = paymentDTO.getId() == null;
-        Invoice invoice = invoiceRepository.findById(paymentDTO.getInvoiceId()).orElseThrow(() -> new ResourceNotFoundException("Invoice with ID '" + paymentDTO.getInvoiceId() + "' not found"));
-        Payment payment = createInvoice(invoice, invoice.getAmount());
+        Invoice invoice = invoiceRepository.findById(paymentDTO.getInvoiceId()).orElseThrow(() -> new ResourceNotFoundException("FAILED ! Invoice with ID '" + paymentDTO.getInvoiceId() + "' not found"));
+        Payment payment = createPayment(invoice, invoice.getAmount());
         if (!isIdNull) {
             payment.setId(paymentDTO.getId());
         }
         Payment savedOrEditedPayment = paymentRepository.save(payment);
-        return new ApiResponse("Payment " + (isIdNull ? "SUCCESS" : "FAILED"), savedOrEditedPayment);
+        return new ApiResponse("SUCCESS",true, savedOrEditedPayment);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
 
-    private Payment createInvoice(Invoice invoice, BigDecimal amount) {
+    private Payment createPayment(Invoice invoice, BigDecimal amount) {
         return new Payment(amount, invoice);
     }
 

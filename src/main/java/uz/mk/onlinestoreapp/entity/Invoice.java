@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -15,26 +16,25 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Invoice{
+public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne(optional = false)
-    @JoinColumn(name="ord_id")
+    @JoinColumn(name = "ord_id")
     private Order order;
 
-    @NotBlank(message = "Invoice amount is required")
-    @Column(precision = 8,scale = 2)
+    @NotNull(message = "Invoice amount is required")
+    @Column(precision = 8, scale = 2)
     private BigDecimal amount;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date issued;
+    private Date issued = new Date();
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date due;
 
     public Invoice(Order order, BigDecimal amount) {
@@ -47,4 +47,5 @@ public class Invoice{
         this.amount = amount;
         this.due = due;
     }
+
 }

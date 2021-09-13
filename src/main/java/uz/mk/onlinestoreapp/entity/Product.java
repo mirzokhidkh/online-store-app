@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
@@ -15,6 +17,8 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+@DynamicInsert
+@DynamicUpdate
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
@@ -30,6 +34,7 @@ public class Product extends AbsIntegerEntity {
     private Category category;
 
 
+    @Size(max = 20,message = "Description too long!")
     @Column(nullable = false, length = 20)
     private String description;
 

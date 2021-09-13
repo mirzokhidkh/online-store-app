@@ -32,7 +32,7 @@ public class PaymentController {
             return errorMap;
         }
         ApiResponse apiResponse = paymentService.saveOrEditPayment(paymentDTO);
-        return ResponseEntity.status(apiResponse.getMessage().equals("SUCCESS") ? 201 : 409).body(apiResponse);
+        return ResponseEntity.status(apiResponse.isStatus() ? 201 : 409).body(apiResponse);
     }
 
     @DeleteMapping("/{payment_id}")
