@@ -24,11 +24,4 @@ public abstract class AbsIntegerEntity {
     @Column(nullable = false)
     @UpdateTimestamp
     private Timestamp updatedAt;
-
-//    @JoinColumn(updatable = false)
-//    @CreatedBy
-//    private UUID createdBy;
-//
-//    @LastModifiedBy
-//    private UUID updatedBy;
 }
