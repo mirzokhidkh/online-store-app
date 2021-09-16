@@ -24,6 +24,6 @@ public class OrderDetailsDTO {
 
     private String productName;
 
-    private BigDecimal totalSumma;
+    private BigDecimal totalPrice;
 
 }

@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
         orderDetailsDTO.setId(detail.getId());
         orderDetailsDTO.setProductName(detail.getProduct().getName());
         orderDetailsDTO.setQuantity(detail.getQuantity());
-        orderDetailsDTO.setTotalSumma(detail.getSumma());
+        orderDetailsDTO.setTotalPrice(detail.getSumma());
         return orderDetailsDTO;
     }
 

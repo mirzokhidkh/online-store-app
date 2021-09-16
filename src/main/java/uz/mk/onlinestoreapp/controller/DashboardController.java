@@ -10,9 +10,7 @@ import uz.mk.onlinestoreapp.entity.Order;
 import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.OverpaidInvoiceDTO;
-import uz.mk.onlinestoreapp.projection.BulkProduct;
-import uz.mk.onlinestoreapp.projection.HighDemandProduct;
-import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
+import uz.mk.onlinestoreapp.projection.*;
 import uz.mk.onlinestoreapp.service.DashboardService;
 
 @RestController
@@ -67,6 +65,15 @@ public class DashboardController {
         return dashboardService.getBulkProducts();
     }
 
+    @GetMapping("/number_of_products_in_year")
+    public Iterable<CountryWithCountOfOrder> getNumberOfProductsInYear() {
+        return dashboardService.getNumberOfProductsInYear();
+    }
+
+    @GetMapping("/orders_without_invoices")
+    public Iterable<OrderWithDetails> getOrdersWithoutInvoices() {
+        return dashboardService.getOrdersWithoutInvoices();
+    }
 
 
 

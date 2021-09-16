@@ -7,9 +7,7 @@ import uz.mk.onlinestoreapp.entity.Product;
 import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.OverpaidInvoiceDTO;
-import uz.mk.onlinestoreapp.projection.BulkProduct;
-import uz.mk.onlinestoreapp.projection.HighDemandProduct;
-import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
+import uz.mk.onlinestoreapp.projection.*;
 
 import java.util.List;
 
@@ -30,8 +28,8 @@ public interface DashboardService {
 
     List<BulkProduct> getBulkProducts();
 
-    List<Product> getNumberOfProductsInYear();
+    List<CountryWithCountOfOrder> getNumberOfProductsInYear();
 
-    List<Order> getOrdersWithoutInvoices();
+    List<OrderWithDetails> getOrdersWithoutInvoices();
 
 }

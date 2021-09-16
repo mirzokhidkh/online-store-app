@@ -9,9 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import uz.mk.onlinestoreapp.entity.template.AbsIntegerEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -37,10 +35,10 @@ public class Detail extends AbsIntegerEntity {
     }
 
     @Transient
-    private BigDecimal totalSumma;
+    private BigDecimal totalPrice;
 
     public BigDecimal getSumma() {
-        totalSumma = product.getPrice().multiply(BigDecimal.valueOf(quantity));
-        return totalSumma;
+        totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        return totalPrice;
     }
 }

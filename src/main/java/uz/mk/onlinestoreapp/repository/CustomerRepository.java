@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import uz.mk.onlinestoreapp.entity.Customer;
 import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
+import uz.mk.onlinestoreapp.projection.CountryWithCountOfOrder;
 
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -17,7 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query(value = "select distinct c.id, c.name, c.country, c.address, c.phone, c.created_at, c.updated_at \n" +
             "from  customer c join orders o on o.cust_id=c.id \n" +
             "where o.date not between '2016-01-01' and '2016-12-31'",nativeQuery = true)
-    List<Customer> findCustomersWithoutOrders();
+    List<Customer> getCustomersWithoutOrders();
 
     @Query(value = "select  new uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO(" +
             "c.id," +
@@ -26,6 +27,14 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             ")\n" +
             "from Customer c\n"+
             "join orders o on c.id=o.customer.id group by c.id order by c.id DESC")
-    List<CustomerWithOrderDTO> findCustomersLastOrders();
+    List<CustomerWithOrderDTO> getCustomersLastOrders();
+
+
+    @Query(value = "select c.country as name, count(c.id) as countOfOrders\n" +
+            "from customer c\n" +
+            "         join orders o on c.id = o.cust_id\n" +
+            "where o.date between '2016-01-01' and '2016-12-31'\n" +
+            "group by c.country",nativeQuery = true )
+    List<CountryWithCountOfOrder> getNumberOfProductsInYear();
 
 }

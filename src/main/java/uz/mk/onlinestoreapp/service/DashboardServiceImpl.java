@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import uz.mk.onlinestoreapp.entity.*;
 import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
-import uz.mk.onlinestoreapp.projection.BulkProduct;
-import uz.mk.onlinestoreapp.projection.HighDemandProduct;
-import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
+import uz.mk.onlinestoreapp.projection.*;
 import uz.mk.onlinestoreapp.repository.CustomerRepository;
 import uz.mk.onlinestoreapp.repository.InvoiceRepository;
 import uz.mk.onlinestoreapp.repository.OrderRepository;
@@ -41,12 +39,12 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<Customer> getCustomersWithoutOrders() {
-        return customerRepository.findCustomersWithoutOrders();
+        return customerRepository.getCustomersWithoutOrders();
     }
 
     @Override
     public List<CustomerWithOrderDTO> getCustomersLastOrders() {
-        return customerRepository.findCustomersLastOrders();
+        return customerRepository.getCustomersLastOrders();
     }
 
     @Override
@@ -65,12 +63,12 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<Product> getNumberOfProductsInYear() {
-        return null;
+    public List<CountryWithCountOfOrder> getNumberOfProductsInYear() {
+        return customerRepository.getNumberOfProductsInYear();
     }
 
     @Override
-    public List<Order> getOrdersWithoutInvoices() {
-        return null;
+    public List<OrderWithDetails> getOrdersWithoutInvoices() {
+        return orderRepository.getOrdersWithoutInvoices();
     }
 }
