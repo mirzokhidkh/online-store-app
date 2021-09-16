@@ -11,12 +11,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InvoiceWithOrderDTO {
-    private Integer invId;
+public class CustomerWithOrderDTO {
+    private Integer id;
 
-    private Date issued;
+    private String name;
 
-    private Integer orderId;
-
-    private Date orderDate;
+    private Date lastOrderDate;
 }

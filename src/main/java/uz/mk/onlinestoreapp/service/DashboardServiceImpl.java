@@ -3,13 +3,15 @@ package uz.mk.onlinestoreapp.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.mk.onlinestoreapp.entity.*;
-import uz.mk.onlinestoreapp.exception.ResourceNotFoundException;
-import uz.mk.onlinestoreapp.payload.ApiResponse;
+import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
-import uz.mk.onlinestoreapp.repository.CategoryRepository;
+import uz.mk.onlinestoreapp.projection.BulkProduct;
+import uz.mk.onlinestoreapp.projection.HighDemandProduct;
+import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
 import uz.mk.onlinestoreapp.repository.CustomerRepository;
 import uz.mk.onlinestoreapp.repository.InvoiceRepository;
 import uz.mk.onlinestoreapp.repository.OrderRepository;
+import uz.mk.onlinestoreapp.repository.ProductRepository;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class DashboardServiceImpl implements DashboardService {
     private final InvoiceRepository invoiceRepository;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
-
+    private final ProductRepository productRepository;
 
 
     @Override
@@ -43,23 +45,23 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<Customer> getCustomersLastOrders() {
-        return null;
+    public List<CustomerWithOrderDTO> getCustomersLastOrders() {
+        return customerRepository.findCustomersLastOrders();
     }
 
     @Override
-    public List<Invoice> getOverpaidInvoices() {
-        return null;
+    public List<OverpaidInvoice> getOverpaidInvoices() {
+        return invoiceRepository.findOverpaidInvoices();
     }
 
     @Override
-    public List<Product> getHighDemandProducts() {
-        return null;
+    public List<HighDemandProduct> getHighDemandProducts() {
+        return productRepository.getHighDemandProducts();
     }
 
     @Override
-    public List<Product> getBulkProducts() {
-        return null;
+    public List<BulkProduct> getBulkProducts() {
+        return productRepository.getBulkProducts();
     }
 
     @Override

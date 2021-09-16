@@ -6,13 +6,13 @@ import org.springframework.stereotype.Repository;
 import uz.mk.onlinestoreapp.entity.Category;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     boolean existsByName(@NotBlank String name);
     boolean existsByNameAndIdNot(@NotBlank String name, Integer id);
-
 
     @Query(value = "select c.id, c.name\n" +
             "from product pr\n" +

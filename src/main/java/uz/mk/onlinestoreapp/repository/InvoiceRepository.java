@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import uz.mk.onlinestoreapp.entity.Invoice;
-import uz.mk.onlinestoreapp.entity.Order;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
+import uz.mk.onlinestoreapp.payload.OverpaidInvoiceDTO;
+import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,5 +26,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
             ")\n" +
             "from Invoice i  where i.issued<i.order.createdAt")
     List<InvoiceWithOrderDTO> findWrongDateInvoices();
+
+
+    @Query(value = "select i.id as invoiceId, (p.amount - i.amount) as reimbursedValue\n" +
+            "from Invoice i\n" +
+            "         join Payment p on i.id = p.invoice.id\n" +
+            "where (p.amount - i.amount) >= 0")
+    List<OverpaidInvoice> findOverpaidInvoices();
 
 }

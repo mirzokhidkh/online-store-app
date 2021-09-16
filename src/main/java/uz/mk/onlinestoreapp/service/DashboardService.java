@@ -4,7 +4,12 @@ import uz.mk.onlinestoreapp.entity.Customer;
 import uz.mk.onlinestoreapp.entity.Invoice;
 import uz.mk.onlinestoreapp.entity.Order;
 import uz.mk.onlinestoreapp.entity.Product;
+import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
+import uz.mk.onlinestoreapp.payload.OverpaidInvoiceDTO;
+import uz.mk.onlinestoreapp.projection.BulkProduct;
+import uz.mk.onlinestoreapp.projection.HighDemandProduct;
+import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
 
 import java.util.List;
 
@@ -17,13 +22,13 @@ public interface DashboardService {
 
     List<Customer> getCustomersWithoutOrders();
 
-    List<Customer> getCustomersLastOrders();
+    List<CustomerWithOrderDTO> getCustomersLastOrders();
 
-    List<Invoice> getOverpaidInvoices();
+    List<OverpaidInvoice> getOverpaidInvoices();
 
-    List<Product> getHighDemandProducts();
+    List<HighDemandProduct> getHighDemandProducts();
 
-    List<Product> getBulkProducts();
+    List<BulkProduct> getBulkProducts();
 
     List<Product> getNumberOfProductsInYear();
 

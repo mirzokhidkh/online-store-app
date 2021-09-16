@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 import uz.mk.onlinestoreapp.entity.Customer;
 import uz.mk.onlinestoreapp.entity.Invoice;
 import uz.mk.onlinestoreapp.entity.Order;
+import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 import uz.mk.onlinestoreapp.payload.InvoiceWithOrderDTO;
+import uz.mk.onlinestoreapp.payload.OverpaidInvoiceDTO;
+import uz.mk.onlinestoreapp.projection.BulkProduct;
+import uz.mk.onlinestoreapp.projection.HighDemandProduct;
+import uz.mk.onlinestoreapp.projection.OverpaidInvoice;
 import uz.mk.onlinestoreapp.service.DashboardService;
 
 @RestController
@@ -40,4 +45,29 @@ public class DashboardController {
     public Iterable<Customer> getCustomersWithoutOrders() {
         return dashboardService.getCustomersWithoutOrders();
     }
+
+    @GetMapping("/customer_last_orders")
+    public Iterable<CustomerWithOrderDTO> getCustomersLastOrders() {
+        return dashboardService.getCustomersLastOrders();
+    }
+
+    @GetMapping("/overpaid_invoices")
+    public Iterable<OverpaidInvoice> getOverpaidInvoices() {
+        return dashboardService.getOverpaidInvoices();
+    }
+
+
+    @GetMapping("/high_demand_products")
+    public Iterable<HighDemandProduct> getHighDemandProducts() {
+        return dashboardService.getHighDemandProducts();
+    }
+
+    @GetMapping("/bulk_products")
+    public Iterable<BulkProduct> getBulkProducts() {
+        return dashboardService.getBulkProducts();
+    }
+
+
+
+
 }

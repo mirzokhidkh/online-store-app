@@ -31,5 +31,4 @@ public abstract class AbsIntegerEntity {
 //
 //    @LastModifiedBy
 //    private UUID updatedBy;
-
 }

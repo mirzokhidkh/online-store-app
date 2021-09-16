@@ -5,18 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InvoiceWithOrderDTO {
-    private Integer invId;
+public class OverpaidInvoiceDTO {
+    private Integer invoice_id;
 
-    private Date issued;
-
-    private Integer orderId;
-
-    private Date orderDate;
+    private BigInteger reimbursed_value;
 }

@@ -25,7 +25,10 @@ public class PaymentServiceImpl implements PaymentService {
     public ApiResponse saveOrEditPayment(PaymentDTO paymentDTO) {
         boolean isIdNull = paymentDTO.getId() == null;
         Invoice invoice = invoiceRepository.findById(paymentDTO.getInvoiceId()).orElseThrow(() -> new ResourceNotFoundException("FAILED ! Invoice with ID '" + paymentDTO.getInvoiceId() + "' not found"));
-        Payment payment = createPayment(invoice, invoice.getAmount());
+        if (paymentDTO.getAmount().compareTo(invoice.getAmount()) < 0) {
+            return new ApiResponse("FAILED ! Payment amount is not enough",false);
+        }
+        Payment payment = createPayment(invoice, paymentDTO.getAmount());
         if (!isIdNull) {
             payment.setId(paymentDTO.getId());
         }

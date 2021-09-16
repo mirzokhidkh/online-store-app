@@ -3,10 +3,9 @@ package uz.mk.onlinestoreapp.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import uz.mk.onlinestoreapp.entity.Category;
 import uz.mk.onlinestoreapp.entity.Customer;
+import uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -19,4 +18,14 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             "from  customer c join orders o on o.cust_id=c.id \n" +
             "where o.date not between '2016-01-01' and '2016-12-31'",nativeQuery = true)
     List<Customer> findCustomersWithoutOrders();
+
+    @Query(value = "select  new uz.mk.onlinestoreapp.payload.CustomerWithOrderDTO(" +
+            "c.id," +
+            "c.name," +
+            "max(o.createdAt)" +
+            ")\n" +
+            "from Customer c\n"+
+            "join orders o on c.id=o.customer.id group by c.id order by c.id DESC")
+    List<CustomerWithOrderDTO> findCustomersLastOrders();
+
 }
