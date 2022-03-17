@@ -2,15 +2,11 @@ package uz.mk.onlinestoreapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.mk.onlinestoreapp.entity.Category;
-import uz.mk.onlinestoreapp.entity.Customer;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.service.CategoryService;
-import uz.mk.onlinestoreapp.service.MapValidationErrorService;
 
 import javax.validation.Valid;
 
@@ -18,20 +14,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/category")
 public class CategoryController {
     private final CategoryService categoryService;
-    private final MapValidationErrorService mapValidationErrorService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, MapValidationErrorService mapValidationErrorService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     @PostMapping
-    public HttpEntity<?> saveOrEditCategory(@Valid @RequestBody Category category, BindingResult result) {
-        HttpEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap!=null) {
-            return errorMap;
-        }
+    public HttpEntity<?> saveOrEditCategory(@Valid @RequestBody Category category) {
         ApiResponse apiResponse = categoryService.saveOrEditCategory(category);
         return ResponseEntity.status(apiResponse.isStatus() ? 201 : 409).body(apiResponse);
     }

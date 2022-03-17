@@ -3,12 +3,10 @@ package uz.mk.onlinestoreapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.mk.onlinestoreapp.entity.Payment;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.payload.PaymentDTO;
-import uz.mk.onlinestoreapp.service.MapValidationErrorService;
 import uz.mk.onlinestoreapp.service.PaymentService;
 
 import javax.validation.Valid;
@@ -17,20 +15,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/payment")
 public class PaymentController {
     private final PaymentService paymentService;
-    private final MapValidationErrorService mapValidationErrorService;
 
     @Autowired
-    public PaymentController(PaymentService PaymentService, MapValidationErrorService mapValidationErrorService) {
+    public PaymentController(PaymentService PaymentService) {
         this.paymentService = PaymentService;
-        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     @PostMapping
-    public HttpEntity<?> saveOrEditPayment(@Valid @RequestBody PaymentDTO paymentDTO, BindingResult result) {
-        HttpEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap != null) {
-            return errorMap;
-        }
+    public HttpEntity<?> saveOrEditPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
         ApiResponse apiResponse = paymentService.saveOrEditPayment(paymentDTO);
         return ResponseEntity.status(apiResponse.isStatus() ? 201 : 409).body(apiResponse);
     }

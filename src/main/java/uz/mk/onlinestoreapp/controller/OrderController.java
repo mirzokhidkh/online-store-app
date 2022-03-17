@@ -3,14 +3,11 @@ package uz.mk.onlinestoreapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import uz.mk.onlinestoreapp.entity.Detail;
 import uz.mk.onlinestoreapp.entity.Order;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.payload.OrderDetailsDTO;
 import uz.mk.onlinestoreapp.payload.ResponseOrder;
-import uz.mk.onlinestoreapp.service.MapValidationErrorService;
 import uz.mk.onlinestoreapp.service.OrderService;
 
 import javax.validation.Valid;
@@ -20,20 +17,14 @@ import java.util.List;
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderService orderService;
-    private final MapValidationErrorService mapValidationErrorService;
 
     @Autowired
-    public OrderController(OrderService OrderService, MapValidationErrorService mapValidationErrorService) {
+    public OrderController(OrderService OrderService) {
         this.orderService = OrderService;
-        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     @PostMapping
-    public HttpEntity<?> saveOrEditOrder(@Valid @RequestBody OrderDetailsDTO orderDetailsDTO, BindingResult result) {
-        HttpEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap != null) {
-            return errorMap;
-        }
+    public HttpEntity<?> saveOrEditOrder(@Valid @RequestBody OrderDetailsDTO orderDetailsDTO) {
         ResponseOrder responseOrder = orderService.saveOrEditOrder(orderDetailsDTO);
         return ResponseEntity.status(responseOrder.getStatus().equals("SUCCESS") ? 201 : 409).body(responseOrder);
     }

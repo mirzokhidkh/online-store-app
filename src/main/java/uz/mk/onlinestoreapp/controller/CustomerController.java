@@ -3,13 +3,10 @@ package uz.mk.onlinestoreapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.mk.onlinestoreapp.entity.Customer;
-import uz.mk.onlinestoreapp.entity.Product;
 import uz.mk.onlinestoreapp.payload.ApiResponse;
 import uz.mk.onlinestoreapp.service.CustomerService;
-import uz.mk.onlinestoreapp.service.MapValidationErrorService;
 
 import javax.validation.Valid;
 
@@ -17,20 +14,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/customer")
 public class CustomerController {
     private final CustomerService customerService;
-    private final MapValidationErrorService mapValidationErrorService;
 
     @Autowired
-    public CustomerController(CustomerService customerService, MapValidationErrorService mapValidationErrorService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     @PostMapping
-    public HttpEntity<?> saveOrEditCustomer(@Valid @RequestBody Customer customer, BindingResult result) {
-        HttpEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap!=null) {
-            return errorMap;
-        }
+    public HttpEntity<?> saveOrEditCustomer(@Valid @RequestBody Customer customer) {
         ApiResponse apiResponse = customerService.saveOrEditCustomer(customer);
         return ResponseEntity.status(apiResponse.isStatus() ? 201 : 409).body(apiResponse);
     }
